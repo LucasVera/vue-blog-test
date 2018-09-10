@@ -1,31 +1,55 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+  <nav class="navbar navbar-expand navbar-light bg-light">
+    <div class="nav navbar-nav">
+      <router-link class="nav-item nav-link" to="/">Home</router-link>
+      <router-link class="nav-item nav-link" to="/blog">Blog</router-link>
     </div>
-    <router-view/>
+    <div class="navbar-nav flex-row ml-auto">
+      <button v-if="!user" class="btn btn-primary" @click="showLoginModal = true">Login</button>
+      <div v-else>
+        Hello, {{ user.name }}
+        <button class="btn btn-secondary" @click="logout">Logout</button>
+      </div>
+    </div>
+  </nav>
+  <login-modal v-if="showLoginModal" @close="showLoginModal = false" @success="loginSuccess"></login-modal>
+  <router-view/>
   </div>
 </template>
 
+<script>
+import LoginModal from './components/LoginModal.vue';
+
+export default {
+  name: 'App',
+  data() {
+    return {
+      showLoginModal: false,
+      user: JSON.parse(localStorage.getItem('user'))
+    }
+  },
+  components: {
+    LoginModal
+  },
+  methods: {
+    loginButtonClicked() {
+      this.showLoginModal = true;
+    },
+    loginSuccess() {
+      this.showLoginModal = false;
+      this.user = JSON.parse(localStorage.getItem('user'));
+      this.$router.push('/about');
+    },
+    logout() {
+      localStorage.removeItem('auth-token');
+      localStorage.removeItem('user');
+      this.user = null;
+    }
+  }
+};
+</script>
+
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+@import '../public/bootstrap.min.css';
 </style>
