@@ -15,6 +15,7 @@
   </nav>
   <login-modal v-if="loginModalOpened" @success="loginSuccess"></login-modal>
   <error-modal v-if="errorModalOpen"></error-modal>
+  <loader v-if="isFetching"></loader>
   <router-view />
   </div>
 </template>
@@ -22,6 +23,7 @@
 <script>
 import LoginModal from './components/LoginModal.vue'
 import ErrorModal from './components/ErrorModal.vue'
+import Loader from './components/Loader.vue'
 import { Mutations } from './types'
 import { mapState } from 'vuex'
 
@@ -29,7 +31,8 @@ export default {
   name: 'App',
   components: {
     LoginModal,
-    ErrorModal
+    ErrorModal,
+    Loader
   },
   methods: {
     loginButtonClicked() {
@@ -46,7 +49,8 @@ export default {
   computed: mapState([
     'loginModalOpened',
     'user',
-    'errorModalOpen'
+    'errorModalOpen',
+    'isFetching'
   ])
 };
 </script>

@@ -2,7 +2,6 @@
   <transition name="modal">
     <div class="modal-mask">
       <div class="modal-wrapper">
-        <loader v-if="isFetching"></loader>
         <div v-if="!isFetching" class="modal-container">
 
           <div class="modal-header py-1 px-0">
@@ -31,8 +30,7 @@
                     <button type="button" class="close" @click="hideLoginError()">
                       <span aria-hidden="true">&times;</span>
                     </button>
-                    <i class="fas fa-info fa-lg"></i>
-                    <p>{{ error }}</p> 
+                    <p><i class="fas fa-exclamation-triangle fa-lg pr-1"></i>{{ error }}</p>
                   </div>
                 </div>
                 <div class="row">
