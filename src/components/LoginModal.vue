@@ -7,8 +7,8 @@
 
           <div class="modal-header py-1 px-0">
             <slot name="header">
-              <span class="h3">Login</span>
-              <button type="button" class="close text-right" aria-label="Close" @click="$emit('close')">
+              <span class="h4 font-weight-bold">Login</span>
+              <button type="button" class="close text-right" aria-label="Close" @click="closeLoginModal()">
                 <span aria-hidden="true">&times;</span>
               </button>
             </slot>
@@ -28,7 +28,7 @@
               <div class="container">
                 <div class="row">
                   <div class="alert alert-danger col-12" role="alert" v-if="showError">
-                    <button type="button" class="close" @click="showError = false">
+                    <button type="button" class="close" @click="hideLoginError()">
                       <span aria-hidden="true">&times;</span>
                     </button>
                     <i class="fas fa-info fa-lg"></i>
@@ -38,7 +38,7 @@
                 <div class="row">
                   <div class="col-12">
                     <button type="submit" :disabled="disableSubmit" class="btn btn-primary btn-lg btn-block" @click="doLogin()">Submit</button>
-                    <button type="button" class="btn btn-secondary btn-lg btn-block" @click="$emit('close')">Cancel</button>
+                    <button type="button" class="btn btn-secondary btn-lg btn-block" @click="closeLoginModal()">Cancel</button>
                   </div>
                 </div>
               </div>
@@ -52,48 +52,46 @@
 </template>
 
 <script>
-import axios from 'axios';
-import config from '../config.js';
-import Loader from './Loader.vue';
+import { Mutations, Actions } from '../types'
+import { mapState } from 'vuex'
+import Loader from '@/components/Loader.vue'
 
 export default {
-  name: 'OkModal',
+  name: 'LoginModal',
   data() {
     return {
       email: '',
-      password: '',
-      showError: false,
-      error: '',
-      isFetching: false
+      password: ''
     }
   },
   methods: {
     async doLogin() {
-      try {
-        this.isFetching = true;
-        const { email, password } = this;
-        const { data: { data }} = await axios.post(`${config.BACKEND_URL}/login`, { email, password });
-        console.log(data);
-        localStorage.setItem('auth-token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        this.$emit('success');
+      this.$store.commit(Mutations.SHOW_LOADER)
+      const { email, password } = this;
+      const ok = await this.$store.dispatch(Actions.LOGIN, { email, password })
+      if (ok) {
+        this.$emit('success')
       }
-      catch (ex) {
-        const { status, data: { error }} = ex.response;
-        this.error = `${status} - ${error}`;
-        this.showError = true;
-      }
-      this.isFetching = false;
-    }
-  },
-  computed: {
-    disableSubmit: function() {
-      return this.email && this.password ? false : true;
+      this.$store.commit(Mutations.HIDE_LOADER)
+    },
+    closeLoginModal() {
+      this.$store.commit(Mutations.HIDE_LOGIN_MODAL)
+    },
+    hideLoginError() {
+      this.$store.commit(Mutations.HIDE_LOGIN_ERROR)
     }
   },
   components: {
     Loader
   },
+  computed: mapState({
+    disableSubmit() {
+      return this.email && this.password ? false : true
+    },
+    showError: 'showLoginError',
+    isFetching: 'isFetching',
+    error: 'loginError'
+  }),
   mounted() {
     this.password = '';
   }
@@ -101,5 +99,7 @@ export default {
 </script>
 
 <style>
-
+.modal-container {
+  width: 400px;
+}
 </style>

@@ -27,8 +27,8 @@ export default {
 <style>
 .sk-circle {
   margin: 100px auto;
-  width: 40px;
-  height: 40px;
+  width: 120px; /*40*/
+  height: 120px; /*40*/
   position: relative;
 }
 .sk-circle .sk-child {
