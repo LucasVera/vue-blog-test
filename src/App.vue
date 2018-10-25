@@ -58,6 +58,9 @@ export default {
 <style>
 @import '../public/bootstrap.min.css';
 
+/*
+  ::: MODALS :::
+*/
 .modal-mask {
   position: fixed;
   z-index: 9998;
@@ -107,4 +110,11 @@ export default {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
 }
+
+
+
+/*
+  ::: CUSTOMIZE BOOTSTRAP STUFF :::
+*/
+
 </style>

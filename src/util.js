@@ -6,7 +6,6 @@ const shouldFetchData = lastFetchMoment => {
     return true
   }
   const secondsPassed = (moment().valueOf() - lastFetchMoment.valueOf()) / 1000;
-  console.log(`seconds passed: ${secondsPassed}`);
   if (secondsPassed > config.SECONDS_UNTIL_NEW_AUTOMATIC_FETCH) {
     return true;
   }

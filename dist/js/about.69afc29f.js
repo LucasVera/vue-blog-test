@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["about"],{fd3f:function(e,t,n){"use strict";n.r(t);var s=function(){var e=this,t=e.$createElement;e._self._c;return e._m(0)},o=[function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",{staticClass:"about"},[n("h1",[e._v("Here goes the blog posts")])])}],l=n("2877"),u={},a=Object(l["a"])(u,s,o,!1,null,null,null);a.options.__file="Blog.vue";t["default"]=a.exports}}]);
-//# sourceMappingURL=about.69afc29f.js.map
